@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.gamemode.GameModes;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.entity.MoveEntityEvent;
 import org.spongepowered.api.event.filter.Getter;
@@ -88,14 +89,17 @@ public class GhostBuster {
 
 	@Listener
 	public void onPlayerMove(MoveEntityEvent e, @Getter("getTargetEntity") Player p) {
+		if (p.gameMode().get() == GameModes.SPECTATOR)
+			return;
+
 		Optional<AABB> playerBox = p.getBoundingBox();
-		if (playerBox.isPresent()) {
-			Set<AABB> blocks = p.getWorld().getIntersectingBlockCollisionBoxes(playerBox.get());
-			if (!blocks.isEmpty() && p.hasPermission("ghostbuster.resend")) {
-				for (AABB blockBox : blocks) {
-					p.resetBlockChange(blockBox.getCenter().toInt());
-				}
-			}
+		if (!playerBox.isPresent())
+			return;
+
+		Set<AABB> blocks = p.getWorld().getIntersectingBlockCollisionBoxes(playerBox.get());
+		if (!blocks.isEmpty() && p.hasPermission("ghostbuster.resend")) {
+			for (AABB blockBox : blocks)
+				p.resetBlockChange(blockBox.getCenter().toInt());
 		}
 	}
 
