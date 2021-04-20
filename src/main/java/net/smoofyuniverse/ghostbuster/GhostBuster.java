@@ -48,7 +48,7 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.Set;
 
-@Plugin(id = "ghostbuster", name = "GhostBuster", version = "1.0.0", authors = "Yeregorix", description = "A ghost block fixer")
+@Plugin(id = "ghostbuster", name = "GhostBuster", version = "1.0.1", authors = "Yeregorix", description = "A ghost block fixer")
 public class GhostBuster {
 	public static final Logger LOGGER = LoggerFactory.getLogger("GhostBuster");
 	private static GhostBuster instance;
